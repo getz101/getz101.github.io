@@ -1,12 +1,325 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ryan Moore</title>
-  </head>
-  <body>
-    <h1>Hi, I'm Ryan</h1>
-    <p>Welcome to my website.</p>
-  </body>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>moorewied.com</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --surface:      #0f0f0d;
+      --gold:         #c9a96e;
+      --gold-dim:     #7a6340;
+      --gold-glow:    rgba(184, 152, 106, 0.18);
+      --ivory:        #f7f4ee;
+      --ivory-dim:    #b8b2a8;
+      --ivory-muted:  #706e6a;
+      --font-display: 'Cormorant Garamond', Georgia, serif;
+      --font-body:    'Jost', system-ui, sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background-color: var(--surface);
+      color: var(--ivory);
+      font-family: var(--font-body);
+      font-weight: 300;
+      font-size: 15px;
+      line-height: 1.7;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── Grain texture overlay ── */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 100;
+      opacity: 0.025;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      background-size: 180px 180px;
+    }
+
+    /* ── Ambient gold glow — soft, wide, low contrast ── */
+    body::before {
+      content: '';
+      position: fixed;
+      top: -60px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 140%;
+      height: 400px;
+      background: radial-gradient(ellipse at 50% 0%,
+        rgba(201,169,110,0.11) 0%,
+        rgba(184,152,106,0.04) 50%,
+        transparent 75%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+
+
+    /* ── Layout ── */
+    .page {
+      position: relative;
+      z-index: 2;
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 0 32px;
+    }
+
+    /* ── Header ── */
+    header {
+      padding: 104px 0 92px;
+    }
+
+    .wordmark {
+      font-family: var(--font-display);
+      font-size: clamp(2.8rem, 6.5vw, 4.6rem);
+      font-weight: 300;
+      letter-spacing: 0.16em;
+      color: var(--ivory);
+      text-transform: lowercase;
+      text-shadow: 0 0 80px rgba(201,169,110,0.15);
+    }
+
+    .wordmark em {
+      color: var(--gold);
+      font-style: normal;
+    }
+
+    .tagline {
+      margin-top: 16px;
+      font-size: 0.64rem;
+      letter-spacing: 0.40em;
+      text-transform: uppercase;
+      color: var(--ivory-muted);
+    }
+
+    /* ── Section label with diamond ── */
+    .section-label {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      font-size: 0.59rem;
+      letter-spacing: 0.42em;
+      text-transform: uppercase;
+      color: var(--gold-dim);
+      margin-bottom: 30px;
+    }
+
+    .section-label::before {
+      content: '';
+      display: inline-block;
+      width: 5px;
+      height: 5px;
+      background: var(--gold);
+      transform: rotate(45deg);
+      flex-shrink: 0;
+      opacity: 0.65;
+    }
+
+    /* ── Featured ── */
+    .section-featured {
+      margin-bottom: 80px;
+    }
+
+    .featured-entry {
+      text-decoration: none;
+      color: inherit;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 20px;
+    }
+
+    .featured-name {
+      font-family: var(--font-display);
+      font-size: clamp(2.4rem, 5.5vw, 3.6rem);
+      font-weight: 300;
+      font-style: italic;
+      color: var(--ivory);
+      line-height: 1.08;
+      letter-spacing: 0.03em;
+      transition: color 0.4s, text-shadow 0.4s;
+    }
+
+    .featured-entry:hover .featured-name {
+      color: var(--gold);
+      text-shadow: 0 0 40px rgba(201,169,110,0.25);
+    }
+
+    .featured-desc {
+      font-size: 0.75rem;
+      color: var(--ivory-dim);
+      margin-top: 12px;
+      line-height: 1.65;
+      max-width: 380px;
+      letter-spacing: 0.02em;
+    }
+
+    .featured-arrow {
+      font-family: var(--font-display);
+      font-size: 1.8rem;
+      font-style: italic;
+      color: var(--ivory-muted);
+      flex-shrink: 0;
+      padding-bottom: 6px;
+      transition: color 0.3s, transform 0.3s;
+    }
+
+    .featured-entry:hover .featured-arrow {
+      color: var(--gold);
+      transform: translateX(6px);
+    }
+
+    /* ── Collection ── */
+    .section-collection {
+      margin-bottom: 64px;
+    }
+
+    .entry-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+      padding-left: 16px;
+    }
+
+    .entry-list a {
+      text-decoration: none;
+      color: inherit;
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 20px;
+    }
+
+    .entry-name {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-weight: 400;
+      color: var(--ivory);
+      line-height: 1.15;
+      letter-spacing: 0.02em;
+      transition: color 0.3s;
+    }
+
+    .entry-list a:hover .entry-name {
+      color: var(--gold);
+    }
+
+    .entry-desc {
+      font-size: 0.74rem;
+      color: var(--ivory-dim);
+      margin-top: 5px;
+      line-height: 1.6;
+      letter-spacing: 0.015em;
+    }
+
+    .entry-arrow {
+      font-size: 0.78rem;
+      color: var(--ivory-muted);
+      flex-shrink: 0;
+      transition: color 0.3s, transform 0.3s;
+      align-self: center;
+    }
+
+    .entry-list a:hover .entry-arrow {
+      color: var(--gold);
+      transform: translateX(4px);
+    }
+
+    /* ── Footer ── */
+    footer {
+      padding: 52px 0 72px;
+      font-size: 0.61rem;
+      letter-spacing: 0.24em;
+      color: var(--ivory-muted);
+      text-transform: uppercase;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 480px) {
+      .page { padding: 0 22px; }
+      header { padding: 68px 0 60px; }
+      .featured-arrow, .entry-arrow { display: none; }
+      .entry-list { padding-left: 0; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * { transition: none !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="page">
+
+    <header>
+      <div class="wordmark">moore<em>wied</em></div>
+      <p class="tagline">Private collection</p>
+    </header>
+
+    <section class="section-featured">
+      <p class="section-label">Featured</p>
+      <a href="#" class="featured-entry">
+        <div>
+          <div class="featured-name">Exercise App</div>
+          <div class="featured-desc">A personal training tool built to track workouts and monitor progress.</div>
+        </div>
+        <span class="featured-arrow">→</span>
+      </a>
+    </section>
+
+    <section class="section-collection">
+      <p class="section-label">Collection</p>
+      <ul class="entry-list">
+        <li>
+          <a href="#">
+            <div>
+              <div class="entry-name">Links</div>
+              <div class="entry-desc">Curated references and resources worth returning to.</div>
+            </div>
+            <span class="entry-arrow">→</span>
+          </a>
+        </li>
+        <li>
+          <a href="#">
+            <div>
+              <div class="entry-name">Notes</div>
+              <div class="entry-desc">Thoughts, drafts, and things worth writing down.</div>
+            </div>
+            <span class="entry-arrow">→</span>
+          </a>
+        </li>
+        <li>
+          <a href="#">
+            <div>
+              <div class="entry-name">Tools</div>
+              <div class="entry-desc">Apps and utilities built or collected for personal use.</div>
+            </div>
+            <span class="entry-arrow">→</span>
+          </a>
+        </li>
+      </ul>
+    </section>
+
+    <footer>&copy; 2026 &nbsp;·&nbsp; moorewied.com</footer>
+
+  </div>
+
+</body>
 </html>
